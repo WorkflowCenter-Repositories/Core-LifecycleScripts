@@ -6,9 +6,9 @@ block=$(ctx node name)
 CONTAINER_ID=$2
 BLOCK_NAME=$(ctx node properties block_name)
 BLOCK_URL=$3
-input=$4
 
-ctx logger info "Deploying ${block} on ${CONTAINER_ID}"
+
+ctx logger info "Dowload ${block} on ${CONTAINER_ID}"
 
         set +e
 	  Wget=$(sudo docker exec -it ${CONTAINER_ID} which wget)
@@ -31,5 +31,4 @@ if [[ "$(docker images -q dtdwd/${image} 2> /dev/null)" = "" && $blueprint = "Fi
    sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/${image}
 fi
 
-ctx logger info "Execute the block"
-sudo docker exec -it ${CONTAINER_ID} java -jar tasks/${BLOCK_NAME} ${blueprint} ${block} ${input}
+
