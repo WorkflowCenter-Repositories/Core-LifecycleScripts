@@ -24,24 +24,11 @@ sudo docker exec -it ${CONTAINER_ID} [ ! -d tasks ] && sudo docker exec -it ${CO
 
 sudo docker exec -it ${CONTAINER_ID} [ ! -f tasks/${BLOCK_NAME} ] && sudo docker exec -it ${CONTAINER_ID} wget -O tasks/${BLOCK_NAME} ${BLOCK_URL} 
 
-########################### image creation ###########################
+var=$(echo ${BLOCK_NAME} | cut -f 1 -d '.')
+image=${var,,}
 ctx logger info "Creating ${image}"
-
-   ###### get task version ######
-   path=${BLOCK_URL%/*}   
-   ver=$(echo ${path##*/})
-
-   ###### get task name without extension ######
-   var=$(echo ${BLOCK_NAME} | cut -f 1 -d '.')
-   image=${var,,}
-
-   ###### get base image of task container ######
-   container=$(sudo docker ps -a | grep ${CONTAINER_ID})
-   b=$(echo $container | cut -d ' ' -f2)
-   base=$(echo "${b//:}")
-
-if [[ "$(docker images -q dtdwd/$base'_'$image$ver 2> /dev/null)" = "" && $create_image = "True" ]]; then
-   sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/$base'_'$image$ver
+if [[ "$(docker images -q dtdwd/${image} 2> /dev/null)" = "" && $create_image = "True" ]]; then
+   sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/${image}
 fi
 
 
