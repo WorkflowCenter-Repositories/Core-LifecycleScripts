@@ -10,6 +10,6 @@ create_image=$3
    b=$(echo $container | cut -d ' ' -f2)
    base=$(echo "${b//:}")
 
-if [[ "$(docker images -q dtdwd/$base_${image} 2> /dev/null)" = "" && $create_image = "True" ]]; then
- sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/$base_${image}
+if [[ "$(docker images -q dtdwd/$base-${image} 2> /dev/null)" = "" && $create-image = "True" ]]; then
+ sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/$base-${image}
 fi
