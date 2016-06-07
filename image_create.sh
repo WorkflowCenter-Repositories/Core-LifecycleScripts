@@ -13,6 +13,10 @@ create_image=$3
 tag=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
 branch=$(git rev-parse --abbrev-ref HEAD)
 wf=$(basename `git rev-parse --show-toplevel`)
-if [[ "$(docker images -q dtdwd/$base-$wf.$branch:$tag 2> /dev/null)" = "" && $create-image = "True" ]]; then
- sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/$base-$wf.$branch:$tag
+
+image=dtdwd/$base-$wf-$branch:$tag
+image=${image,,}
+
+if [[ "$(docker images -q $image 2> /dev/null)" = "" && $create_image = "True" ]]; then
+ sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} $image
 fi
