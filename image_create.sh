@@ -14,8 +14,11 @@ set +e
 tag=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
 branch=$(git rev-parse --abbrev-ref HEAD)
 wf=$(basename `git rev-parse --show-toplevel`)
-
-image=dtdwd/$base-$wf-$branch:$tag
+if [[ -z $tag ]]; then
+ image=dtdwd/$base-$wf-$branch
+else 
+ image=dtdwd/$base-$wf-$branch:$tag
+fi 
 image=${image,,}
 set -e
 if [[ "$(docker images -q $image 2> /dev/null)" = "" ]]; then
