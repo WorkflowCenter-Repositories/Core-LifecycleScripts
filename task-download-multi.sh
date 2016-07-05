@@ -27,15 +27,12 @@ sudo docker exec -it ${CONTAINER_ID} [ ! -f tasks/${BLOCK_NAME} ] && sudo docker
 ########################### image creation ###########################
 ctx logger info "Creating ${image}"
 
-   ###### get task version ######
-   #path=${BLOCK_URL%/*}   
-   #ver=$(echo ${path##*/})
+   ###### get task ID ######
+   
+   source $PWD/Core-LifecycleScripts/get-task-ID.sh
+   var=$(func $BLOCK_URL)
+   task=${var,,}
 
-   ###### get task name without extension ######
-   #var=$(echo ${BLOCK_NAME} | cut -f 1 -d '.')
-   #image=${var,,}
-   source get-task-ID.sh
-   task=$(func $BLOCK_URL)
    ###### get base image of task container ######
    container=$(sudo docker ps -a | grep ${CONTAINER_ID})
    b=$(echo $container | cut -d ' ' -f2)
