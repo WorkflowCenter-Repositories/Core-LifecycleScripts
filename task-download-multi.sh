@@ -28,20 +28,21 @@ sudo docker exec -it ${CONTAINER_ID} [ ! -f tasks/${BLOCK_NAME} ] && sudo docker
 ctx logger info "Creating ${image}"
 
    ###### get task version ######
-   path=${BLOCK_URL%/*}   
-   ver=$(echo ${path##*/})
+   #path=${BLOCK_URL%/*}   
+   #ver=$(echo ${path##*/})
 
    ###### get task name without extension ######
-   var=$(echo ${BLOCK_NAME} | cut -f 1 -d '.')
-   image=${var,,}
-
+   #var=$(echo ${BLOCK_NAME} | cut -f 1 -d '.')
+   #image=${var,,}
+   source get-task-ID.sh
+   task=$(func $BLOCK_URL)
    ###### get base image of task container ######
    container=$(sudo docker ps -a | grep ${CONTAINER_ID})
    b=$(echo $container | cut -d ' ' -f2)
    base=$(echo "${b//:}")
 
-if [[ "$(docker images -q dtdwd/$base'_'$image$ver 2> /dev/null)" = "" && $create_image = "True" ]]; then
-   sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/$base'_'$image$ver
+if [[ "$(docker images -q dtdwd/$base'_'$task 2> /dev/null)" = "" && $create_image = "True" ]]; then
+   sudo docker commit -m "new ${image} image" -a "rawa" ${CONTAINER_ID} dtdwd/$base'_'$task
 fi
 
 
